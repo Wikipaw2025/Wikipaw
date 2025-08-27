@@ -33,9 +33,6 @@
             width: 300px;
             height: 80px;
             margin: 0 auto;
-            /* --- INICIO DE LA MODIFICACIÓN: Fondo del logo eliminado --- */
-            /* background: rgba(255, 255, 255, 0.08); */
-            /* --- FIN DE LA MODIFICACIÓN --- */
             border-radius: 18px;
             display: flex;
             align-items: center;
@@ -120,8 +117,8 @@
         .card.right { z-index: 3; transform: translateX(280px) translateZ(0px) scale(0.85); opacity: 0.7; }
         .card.far-left { z-index: 2; transform: translateX(-430px) translateZ(-50px) scale(0.7); opacity: 0.6; }
         .card.far-right { z-index: 2; transform: translateX(430px) translateZ(-50px) scale(0.7); opacity: 0.6; }
-        .card.hidden-left { z-index: 1; transform: translateX(-545px) translateZ(-100px) scale(0.55); opacity: 0.4; }
-        .card.hidden-right { z-index: 1; transform: translateX(545px) translateZ(-100px) scale(0.55); opacity: 0.4; }
+        .card.hidden-left { z-index: 1; transform: translateX(-550px) translateZ(-100px) scale(0.55); opacity: 0.4; }
+        .card.hidden-right { z-index: 1; transform: translateX(550px) translateZ(-100px) scale(0.55); opacity: 0.4; }
 
         .card-inner {
             position: relative;
@@ -254,8 +251,15 @@
                 padding-top: 120px;
             }
             .year-counter {
-                top: -110px;
+                /* --- INICIO DE LA MODIFICACIÓN 1: Año más abajo en móvil --- */
+                top: -75px;
+                /* --- FIN DE LA MODIFICACIÓN 1 --- */
                 font-size: 36px;
+            }
+            .indicators {
+                /* --- INICIO DE LA MODIFICACIÓN 2: Puntos más arriba en móvil --- */
+                bottom: -50px;
+                /* --- FIN DE LA MODIFICACIÓN 2 --- */
             }
             .carousel-container { 
                 margin-bottom: 140px; 
@@ -263,18 +267,18 @@
             .card { width: 180px; height: 255px; }
             .card.center { transform: translateX(0) translateZ(80px) scale(1.1); }
             .card.center:hover { transform: translateX(0) translateY(-25px) translateZ(80px) scale(1.1); }
-            .card.left { transform: translateX(-200px) translateZ(0px) scale(0.8); }
-            .card.left:hover { transform: translateX(-200px) translateY(-15px) translateZ(0px) scale(0.8); }
-            .card.right { transform: translateX(200px) translateZ(0px) scale(0.8); }
-            .card.right:hover { transform: translateX(-200px) translateY(-15px) translateZ(0px) scale(0.8); }
-            .card.far-left { transform: translateX(-230px) translateZ(-30px) scale(0.6); }
-            .card.far-left:hover { transform: translateX(-230px) translateY(-10px) translateZ(-30px) scale(0.6); }
-            .card.far-right { transform: translateX(230px) translateZ(-30px) scale(0.6); }
-            .card.far-right:hover { transform: translateX(230px) translateY(-10px) translateZ(-30px) scale(0.6); }
-            .card.hidden-left { transform: translateX(-260px) translateZ(-60px) scale(0.4); }
-            .card.hidden-left:hover { transform: translateX(-260px) translateY(-8px) translateZ(-60px) scale(0.4); }
-            .card.hidden-right { transform: translateX(260px) translateZ(-60px) scale(0.4); }
-            .card.hidden-right:hover { transform: translateX(260px) translateY(-8px) translateZ(-60px) scale(0.4); }
+            .card.left { transform: translateX(-165px) translateZ(0px) scale(0.8); }
+            .card.left:hover { transform: translateX(-165px) translateY(-15px) translateZ(0px) scale(0.8); }
+            .card.right { transform: translateX(165px) translateZ(0px) scale(0.8); }
+            .card.right:hover { transform: translateX(-165px) translateY(-15px) translateZ(0px) scale(0.8); }
+            .card.far-left { transform: translateX(-200px) translateZ(-30px) scale(0.6); }
+            .card.far-left:hover { transform: translateX(-200px) translateY(-10px) translateZ(-30px) scale(0.6); }
+            .card.far-right { transform: translateX(200px) translateZ(-30px) scale(0.6); }
+            .card.far-right:hover { transform: translateX(200px) translateY(-10px) translateZ(-30px) scale(0.6); }
+            .card.hidden-left { transform: translateX(-235px) translateZ(-60px) scale(0.4); }
+            .card.hidden-left:hover { transform: translateX(-235px) translateY(-8px) translateZ(-60px) scale(0.4); }
+            .card.hidden-right { transform: translateX(235px) translateZ(-60px) scale(0.4); }
+            .card.hidden-right:hover { transform: translateX(235px) translateY(-8px) translateZ(-60px) scale(0.4); }
             .logo-container { width: 250px; height: 60px; font-size: 16px; }
             .nav-arrow { width: 50px; height: 50px; font-size: 24px; }
             .info-text-container { font-size: 14px; }
@@ -321,7 +325,7 @@
     </main>
 
     <footer class="footer">
-        <p>&copy; 2085 Todos los derechos reservados.</p>
+        <p>&copy; 2085 Wikipaw - Todos los derechos reservados.</p>
     </footer>
 
     <script>

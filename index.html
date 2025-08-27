@@ -251,15 +251,11 @@
                 padding-top: 120px;
             }
             .year-counter {
-                /* --- INICIO DE LA MODIFICACIÓN 1: Año más abajo en móvil --- */
                 top: -75px;
-                /* --- FIN DE LA MODIFICACIÓN 1 --- */
                 font-size: 36px;
             }
             .indicators {
-                /* --- INICIO DE LA MODIFICACIÓN 2: Puntos más arriba en móvil --- */
                 bottom: -50px;
-                /* --- FIN DE LA MODIFICACIÓN 2 --- */
             }
             .carousel-container { 
                 margin-bottom: 140px; 
@@ -270,15 +266,23 @@
             .card.left { transform: translateX(-165px) translateZ(0px) scale(0.8); }
             .card.left:hover { transform: translateX(-165px) translateY(-15px) translateZ(0px) scale(0.8); }
             .card.right { transform: translateX(165px) translateZ(0px) scale(0.8); }
-            .card.right:hover { transform: translateX(-165px) translateY(-15px) translateZ(0px) scale(0.8); }
+            
+            /* --- INICIO DE LA CORRECCIÓN: Signo corregido --- */
+            .card.right:hover { transform: translateX(165px) translateY(-15px) translateZ(0px) scale(0.8); }
+            /* --- FIN DE LA CORRECCIÓN --- */
+
+            .card.far-left,
+            .card.far-right,
+            .card.hidden-left,
+            .card.hidden-right {
+                pointer-events: none;
+            }
+            
             .card.far-left { transform: translateX(-200px) translateZ(-30px) scale(0.6); }
-            .card.far-left:hover { transform: translateX(-200px) translateY(-10px) translateZ(-30px) scale(0.6); }
             .card.far-right { transform: translateX(200px) translateZ(-30px) scale(0.6); }
-            .card.far-right:hover { transform: translateX(200px) translateY(-10px) translateZ(-30px) scale(0.6); }
             .card.hidden-left { transform: translateX(-235px) translateZ(-60px) scale(0.4); }
-            .card.hidden-left:hover { transform: translateX(-235px) translateY(-8px) translateZ(-60px) scale(0.4); }
             .card.hidden-right { transform: translateX(235px) translateZ(-60px) scale(0.4); }
-            .card.hidden-right:hover { transform: translateX(235px) translateY(-8px) translateZ(-60px) scale(0.4); }
+            
             .logo-container { width: 250px; height: 60px; font-size: 16px; }
             .nav-arrow { width: 50px; height: 50px; font-size: 24px; }
             .info-text-container { font-size: 14px; }

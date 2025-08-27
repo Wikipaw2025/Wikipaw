@@ -4,11 +4,11 @@
 
 **\[ProtonMail] GitHub:**
 
-Enlace WEB: https://cvdll.github.io/CVDLL/
+Enlace WEB: https://wikipaw2025.github.io/Wikipaw/
 
-Correo: CID\_Virgen\_De\_Las\_Lajas@proton.me
+Correo: wikipaw@proton.me
 
-Contraseña: cvdllproton#1
+Contraseña: Wikipaw#2025
 
-Correo de recuperación: cvdllproton#1@mailper.com
+Correo de recuperación: wikipaw@mailper.com
 

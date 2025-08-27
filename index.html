@@ -12,13 +12,19 @@
             box-sizing: border-box;
         }
 
+        /* --- INICIO DE LA CORRECCIÓN: Solución definitiva al desbordamiento --- */
+        html, body {
+            overflow-x: hidden;
+        }
+        /* --- FIN DE LA CORRECCIÓN --- */
+
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #1a252f 0%, #2c3e50 50%, #1a252f 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
+            /* Se elimina 'overflow-x: hidden;' de aquí porque ya está arriba */
         }
 
         /* Header */
@@ -266,10 +272,7 @@
             .card.left { transform: translateX(-165px) translateZ(0px) scale(0.8); }
             .card.left:hover { transform: translateX(-165px) translateY(-15px) translateZ(0px) scale(0.8); }
             .card.right { transform: translateX(165px) translateZ(0px) scale(0.8); }
-            
-            /* --- INICIO DE LA CORRECCIÓN: Signo corregido --- */
             .card.right:hover { transform: translateX(165px) translateY(-15px) translateZ(0px) scale(0.8); }
-            /* --- FIN DE LA CORRECCIÓN --- */
 
             .card.far-left,
             .card.far-right,

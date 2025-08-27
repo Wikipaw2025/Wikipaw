@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrusel del Futuro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a252f 0%, #2c3e50 50%, #1a252f 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-container {
+            width: 300px;
+            height: 80px;
+            margin: 0 auto;
+            /* --- INICIO DE LA MODIFICACIÓN: Fondo del logo eliminado --- */
+            /* background: rgba(255, 255, 255, 0.08); */
+            /* --- FIN DE LA MODIFICACIÓN --- */
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .logo-container img {
+            max-width: 90%;
+            max-height: 90%;
+            height: auto;
+        }
+
+        /* Year Counter */
+        .year-counter {
+            position: absolute;
+            top: -140px; 
+            left: 50%;
+            transform: translateX(calc(-50% + 5px)); 
+            z-index: 10;
+            display: flex;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 48px;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .dynamic-year {
+            display: inline-block;
+            min-width: 70px; 
+            text-align: left;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding-top: 180px; 
+        }
+
+        /* Carousel Container */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+            margin-bottom: 120px;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+        }
+
+        /* Card Styles */
+        .card {
+            position: absolute;
+            width: 240px; 
+            height: 340px;
+            perspective: 1000px;
+            cursor: pointer;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-origin: center center;
+        }
+
+        /* Card positions */
+        .card.center { z-index: 4; transform: translateX(0) translateZ(100px) scale(1.2); }
+        .card.left { z-index: 3; transform: translateX(-280px) translateZ(0px) scale(0.85); opacity: 0.7; }
+        .card.right { z-index: 3; transform: translateX(280px) translateZ(0px) scale(0.85); opacity: 0.7; }
+        .card.far-left { z-index: 2; transform: translateX(-430px) translateZ(-50px) scale(0.7); opacity: 0.6; }
+        .card.far-right { z-index: 2; transform: translateX(430px) translateZ(-50px) scale(0.7); opacity: 0.6; }
+        .card.hidden-left { z-index: 1; transform: translateX(-545px) translateZ(-100px) scale(0.55); opacity: 0.4; }
+        .card.hidden-right { z-index: 1; transform: translateX(545px) translateZ(-100px) scale(0.55); opacity: 0.4; }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 18px;
+        }
+        .card.flipped .card-inner { transform: rotateY(180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 18px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #333;
+            transition: box-shadow 0.4s ease, transform 0.4s ease;
+            background-size: cover;
+            background-position: center;
+        }
+        .card-front { background-image: url('images/front.png'); }
+        .card-back { transform: rotateY(180deg); }
+        
+        .card[data-index="0"] .card-back { background-image: url('images/back1.png'); }
+        .card[data-index="1"] .card-back { background-image: url('images/back2.png'); }
+        .card[data-index="2"] .card-back { background-image: url('images/back3.png'); }
+        .card[data-index="3"] .card-back { background-image: url('images/back4.png'); }
+
+        .card-content { text-align: center; padding: 20px; }
+
+        /* Navigation Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: white;
+            font-size: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-arrow:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-50%) scale(1.1); }
+        .nav-arrow.prev { left: 20px; }
+        .nav-arrow.next { right: 20px; }
+
+        /* Hover Effects */
+        .card:hover { transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .card.center:hover { transform: translateX(0) translateY(-30px) translateZ(100px) scale(1.2); }
+        .card.left:hover { transform: translateX(-280px) translateY(-20px) translateZ(0px) scale(0.85); opacity: 0.9; }
+        .card.right:hover { transform: translateX(280px) translateY(-20px) translateZ(0px) scale(0.85); opacity: 0.9; }
+        .card.far-left:hover { transform: translateX(-430px) translateY(-15px) translateZ(-50px) scale(0.7); opacity: 0.8; }
+        .card.far-right:hover { transform: translateX(430px) translateY(-15px) translateZ(-50px) scale(0.7); opacity: 0.8; }
+        .card.hidden-left:hover { transform: translateX(-545px) translateY(-10px) translateZ(-100px) scale(0.55); opacity: 0.6; }
+        .card.hidden-right:hover { transform: translateX(545px) translateY(-10px) translateZ(-100px) scale(0.55); opacity: 0.6; }
+        .card:hover .card-front, .card:hover .card-back { box-shadow: 0 35px 90px rgba(0, 0, 0, 0.7); }
+        .card:hover .card-back { transform: rotateY(180deg); }
+
+        /* Indicators */
+        .indicators {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 5;
+        }
+        .indicator { width: 12px; height: 12px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); cursor: pointer; transition: all 0.3s ease; }
+        .indicator.active { background: rgba(255, 255, 255, 0.7); transform: scale(1.3); }
+        
+        .info-text-container {
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+            text-align: left;
+            padding: 0 20px;
+            line-height: 1.7;
+            font-size: 16px;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        .info-text-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .info-text-container p {
+            margin-bottom: 16px;
+        }
+        .info-text-container strong {
+            color: #a8edea;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            margin-top: auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: 120px;
+            }
+            .year-counter {
+                top: -110px;
+                font-size: 36px;
+            }
+            .carousel-container { 
+                margin-bottom: 140px; 
+            }
+            .card { width: 180px; height: 255px; }
+            .card.center { transform: translateX(0) translateZ(80px) scale(1.1); }
+            .card.center:hover { transform: translateX(0) translateY(-25px) translateZ(80px) scale(1.1); }
+            .card.left { transform: translateX(-200px) translateZ(0px) scale(0.8); }
+            .card.left:hover { transform: translateX(-200px) translateY(-15px) translateZ(0px) scale(0.8); }
+            .card.right { transform: translateX(200px) translateZ(0px) scale(0.8); }
+            .card.right:hover { transform: translateX(-200px) translateY(-15px) translateZ(0px) scale(0.8); }
+            .card.far-left { transform: translateX(-230px) translateZ(-30px) scale(0.6); }
+            .card.far-left:hover { transform: translateX(-230px) translateY(-10px) translateZ(-30px) scale(0.6); }
+            .card.far-right { transform: translateX(230px) translateZ(-30px) scale(0.6); }
+            .card.far-right:hover { transform: translateX(230px) translateY(-10px) translateZ(-30px) scale(0.6); }
+            .card.hidden-left { transform: translateX(-260px) translateZ(-60px) scale(0.4); }
+            .card.hidden-left:hover { transform: translateX(-260px) translateY(-8px) translateZ(-60px) scale(0.4); }
+            .card.hidden-right { transform: translateX(260px) translateZ(-60px) scale(0.4); }
+            .card.hidden-right:hover { transform: translateX(260px) translateY(-8px) translateZ(-60px) scale(0.4); }
+            .logo-container { width: 250px; height: 60px; font-size: 16px; }
+            .nav-arrow { width: 50px; height: 50px; font-size: 24px; }
+            .info-text-container { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Logo">
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="carousel-container">
+            <div class="year-counter">
+                <span class="static-year">20</span>
+                <span class="dynamic-year" id="dynamicYear">25</span>
+            </div>
+
+            <button class="nav-arrow prev" onclick="prevCard()">‹</button>
+            <button class="nav-arrow next" onclick="nextCard()">›</button>
+            
+            <div class="carousel" id="carousel">
+                <div class="card center" data-index="0" onclick="flipCard(this)"> <div class="card-inner"> <div class="card-front"> <div class="card-content"> </div> </div> <div class="card-back"> </div> </div> </div>
+                <div class="card right" data-index="1" onclick="flipCard(this)"> <div class="card-inner"> <div class="card-front"> <div class="card-content"> </div> </div> <div class="card-back"> </div> </div> </div>
+                <div class="card far-right" data-index="2" onclick="flipCard(this)"> <div class="card-inner"> <div class="card-front"> <div class="card-content"> </div> </div> <div class="card-back"> </div> </div> </div>
+                <div class="card hidden" data-index="3" onclick="flipCard(this)"> <div class="card-inner"> <div class="card-front"> <div class="card-content"> </div> </div> <div class="card-back"> </div> </div> </div>
+            </div>
+
+            <div class="indicators">
+                <div class="indicator active" onclick="goToCard(0)"></div>
+                <div class="indicator" onclick="goToCard(1)"></div>
+                <div class="indicator" onclick="goToCard(2)"></div>
+                <div class="indicator" onclick="goToCard(3)"></div>
+            </div>
+        </div>
+
+        <div class="info-text-container">
+            <p id="info-paragraph"></p>
+            <p id="info-status"></p>
+            <p id="info-framework"></p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2085 Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        let currentIndex = 0;
+        const totalCards = 4;
+        const cards = document.querySelectorAll('.card');
+        const indicators = document.querySelectorAll('.indicator');
+        const dynamicYearEl = document.getElementById('dynamicYear');
+        let yearAnimationTimer = null;
+
+        const positions = ['far-left', 'left', 'center', 'right', 'far-right', 'hidden-left', 'hidden-right'];
+        const years = [2025, 2045, 2065, 2085];
+
+        const infoTexts = [
+            { paragraph: "La relación entre el perro y el ser humano se basa en la responsabilidad y el afecto. El humano es el protector y proveedor de necesidades básicas como comida, refugio y cuidado. El perro, por su parte, es un miembro de la familia que ofrece compañía, lealtad y alegría. La comunicación entre ambos es limitada y se apoya principalmente en el lenguaje corporal y los ladridos.", status: "<strong>Estatus legal:</strong> Animal de compañía, propiedad legal de su dueño.", framework: "<strong>Marco legal:</strong> Protegido por leyes de bienestar animal que castigan el maltrato y exigen cuidado básico (alimento, vacunas, etc.)." },
+            { paragraph: "La relación entre el perro y el ser humano evoluciona hacia una de inversión y co-dependencia. El humano invierte significativamente en la creación y mantenimiento de un compañero de vida, cuya longevidad permite compartir múltiples etapas vitales. A cambio, el perro ofrece una compañía más profunda y estable. La comunicación, aunque aún no verbal, es más intuitiva gracias a las capacidades cognitivas aumentadas del animal.", status: "<strong>Estatus legal:</strong> Animal de compañía genéticamente modificado. Su adquisición está regulada y requiere licencias que certifiquen la capacidad del dueño para gestionar un ser con una vida extendida.", framework: "<strong>Marco legal:</strong> Protegido por leyes de bioética y bienestar animal avanzadas. Se regula estrictamente la modificación genética y se exige un seguimiento veterinario constante a través de implantes de monitoreo." },
+            { paragraph: "La relación se transforma en un vínculo intelectual y emocional. La barrera de la especie se difumina gracias a la tecnología de comunicación neuronal, permitiendo un diálogo básico. El Perrobot no es una mascota, sino un interlocutor. El humano ya no interpreta, sino que escucha y conversa, llevando la empatía y el entendimiento a un nivel sin precedentes. La interacción se basa en el respeto mutuo.", status: "<strong>Estatus legal:</strong> Entidad biotecnológica bajo tutela. No se considera una \"propiedad\", sino un ser con derechos limitados, especialmente el derecho a una comunicación sin trabas y a un bienestar físico y mental monitorizado.", framework: "<strong>Marco legal:</strong> Legislación sobre derechos de inteligencias aumentadas. Se regulan las interfaces neuronales, el uso de datos biométricos y se establecen protocolos de \"consentimiento\" básico del animal para procedimientos médicos." },
+            { paragraph: "La relación entre el metacan y el humano trasciende el compañerismo para convertirse en una simbiosis existencial. Al ser una entidad potencialmente inmortal, el metacan es un custodio de memorias, un compañero que perdura a través de generaciones. La pérdida es reemplazada por la continuidad. La interacción es de igual a igual, una asociación entre dos formas de vida inteligentes.", status: "<strong>Estatus legal:</strong> Entidad sintética con personalidad jurídica. Goza de derechos fundamentales como la autonomía, la integridad de su código fuente y la propiedad de su propia identidad digital.", framework: "<strong>Marco legal:</strong> Corpus legal para la vida artificial. Regula la creación, los derechos de autor sobre personalidades IA, los protocolos de transferencia de conciencia y las condiciones para su desconexión." }
+        ];
+
+        const infoContainerEl = document.querySelector('.info-text-container');
+        const infoParagraphEl = document.getElementById('info-paragraph');
+        const infoStatusEl = document.getElementById('info-status');
+        const infoFrameworkEl = document.getElementById('info-framework');
+
+        function updateInfoText(index) {
+            const currentText = infoTexts[index];
+            infoParagraphEl.innerHTML = currentText.paragraph;
+            infoStatusEl.innerHTML = currentText.status;
+            infoFrameworkEl.innerHTML = currentText.framework;
+        }
+
+        function animateYearCounter(newIndex) {
+            const startYear = parseInt(dynamicYearEl.textContent);
+            const endYear = years[newIndex] % 100;
+            if (startYear === endYear) return;
+
+            if (yearAnimationTimer) clearInterval(yearAnimationTimer);
+            
+            const duration = 600;
+            const diff = endYear - startYear;
+            const increment = diff > 0 ? 1 : -1;
+            const stepTime = Math.abs(duration / diff);
+            let currentYear = startYear;
+
+            yearAnimationTimer = setInterval(() => {
+                currentYear += increment;
+                dynamicYearEl.textContent = currentYear;
+                if (currentYear === endYear) clearInterval(yearAnimationTimer);
+            }, stepTime);
+        }
+
+        function flipCard(card) {
+            if (card.classList.contains('center')) {
+                card.classList.toggle('flipped');
+                if (card.classList.contains('flipped')) {
+                    infoContainerEl.classList.add('visible');
+                } else {
+                    infoContainerEl.classList.remove('visible');
+                }
+            } else {
+                const cardIndex = parseInt(card.dataset.index);
+                cards.forEach(c => c.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)');
+                goToCard(cardIndex);
+                setTimeout(() => {
+                    cards.forEach(c => c.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)');
+                }, 1200);
+            }
+        }
+
+        function updateCarousel() {
+            infoContainerEl.classList.remove('visible');
+            
+            cards.forEach((card, index) => {
+                let relativePosition = index - currentIndex;
+                card.classList.remove(...positions);
+                
+                if (relativePosition === 0) card.classList.add('center');
+                else if (relativePosition === 1) card.classList.add('right');
+                else if (relativePosition === 2) card.classList.add('far-right');
+                else if (relativePosition === 3) card.classList.add('hidden-right');
+                else if (relativePosition === -1) card.classList.add('left');
+                else if (relativePosition === -2) card.classList.add('far-left');
+                else if (relativePosition === -3) card.classList.add('hidden-left');
+            });
+            
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentIndex);
+            });
+
+            animateYearCounter(currentIndex);
+            
+            setTimeout(() => {
+                updateInfoText(currentIndex);
+                
+                const newCenterCard = document.querySelector('.card.center');
+                if (newCenterCard && newCenterCard.classList.contains('flipped')) {
+                    infoContainerEl.classList.add('visible');
+                }
+            }, 400); 
+
+
+            const prevButton = document.querySelector('.nav-arrow.prev');
+            const nextButton = document.querySelector('.nav-arrow.next');
+            if (prevButton) {
+                prevButton.style.opacity = currentIndex === 0 ? '0.3' : '1';
+                prevButton.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
+            }
+            if (nextButton) {
+                nextButton.style.opacity = currentIndex === totalCards - 1 ? '0.3' : '1';
+                nextButton.style.cursor = currentIndex === totalCards - 1 ? 'not-allowed' : 'pointer';
+            }
+        }
+
+        function nextCard() { if (currentIndex < totalCards - 1) { currentIndex++; updateCarousel(); } }
+        function prevCard() { if (currentIndex > 0) { currentIndex--; updateCarousel(); } }
+        function goToCard(index) { currentIndex = index; updateCarousel(); }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') prevCard();
+            else if (e.key === 'ArrowRight') nextCard();
+            else if (e.key === ' ') {
+                e.preventDefault();
+                const centerCard = document.querySelector('.card.center');
+                if (centerCard) flipCard(centerCard);
+            }
+        });
+
+        let startX = 0, endX = 0;
+        const carousel = document.getElementById('carousel');
+        carousel.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+        carousel.addEventListener('touchend', e => { endX = e.changedTouches[0].clientX; handleSwipe(); });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = startX - endX;
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) nextCard();
+                else prevCard();
+            }
+        }
+
+        // Inicializar
+        updateCarousel();
+    </script>
+</body>
+</html>
